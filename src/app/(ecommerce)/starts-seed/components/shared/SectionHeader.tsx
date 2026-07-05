@@ -40,7 +40,7 @@ export default function SectionHeader({
     <Wrapper
       className={`relative overflow-hidden ${card ? "rounded-t-md bg-white" : ""}`}
     >
-      <div className={`h-[3px] w-full ${accentColor}`} />
+      <div className={`h-0.75 w-full ${accentColor}`} />
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           {icon}

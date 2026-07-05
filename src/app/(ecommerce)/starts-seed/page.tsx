@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import HeroSlider from "./components/HeroSlider";
+import QuickLinks from "./components/QuickLinks";
 import BrandScroll from "./components/BrandScroll";
 import Categories from "./components/Categories";
 import FlashDeals from "./components/FlashDeals";
@@ -34,6 +35,10 @@ export default function Page() {
       <main className="mx-auto w-full max-w-[1920px] flex-1 space-y-3 px-[5%] py-3">
         {/* Hero area: slider + scrolling brands */}
         <HeroSlider />
+
+        {/* Quick links strip (Fulfilled by Shopee / Mall / Tech / …) */}
+        <QuickLinks />
+
         <BrandScroll />
 
         {/* Section 2 — Categories */}
