@@ -44,7 +44,7 @@ export default function Header() {
 function Row1() {
   return (
     <div className="w-full border-b border-black/5 bg-[#fafafa] text-xs text-gray-600">
-      <div className="mx-auto flex h-8 max-w-350 items-center justify-between px-3 sm:px-4">
+      <div className="mx-auto flex h-8 max-w-[1920px] items-center justify-between px-[2%]">
         {/* left */}
         <div className="flex items-center gap-4">
           {topBarLeft.map((item) => (
@@ -148,7 +148,7 @@ function Row1() {
 function Row2({ placeholder }: { placeholder: string }) {
   return (
     <div className="w-full bg-amazon-dark text-white">
-      <div className="mx-auto flex h-15 max-w-350 items-center gap-2 px-3 sm:gap-4 sm:px-4">
+      <div className="mx-auto flex h-15 max-w-[1920px] items-center gap-2 px-[2%] sm:gap-4">
         {/* hamburger (mobile) + logo */}
         <button className="flex h-10 w-10 items-center justify-center rounded border border-transparent hover:border-white md:hidden">
           <Hamburger />
@@ -244,7 +244,7 @@ function Row2({ placeholder }: { placeholder: string }) {
 function Row3() {
   return (
     <div className="w-full bg-amazon-nav text-white">
-      <div className="mx-auto flex h-10 max-w-350 items-center gap-1 overflow-x-auto px-3 no-scrollbar sm:px-4">
+      <div className="mx-auto flex h-10 max-w-[1920px] items-center gap-1 overflow-x-auto px-[2%] no-scrollbar">
         <button className="flex shrink-0 items-center gap-1 rounded px-2 py-1 text-sm font-bold ring-1 ring-transparent hover:ring-white">
           <Hamburger />
           All
