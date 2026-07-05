@@ -31,7 +31,7 @@ export default function Page() {
       {/* Full-width header */}
       <Header />
 
-      <main className="mx-auto w-full max-w-350 flex-1 space-y-3 px-3 py-3 sm:px-4">
+      <main className="mx-auto w-full max-w-[1920px] flex-1 space-y-3 px-[5%] py-3">
         {/* Hero area: slider + scrolling brands */}
         <HeroSlider />
         <BrandScroll />
