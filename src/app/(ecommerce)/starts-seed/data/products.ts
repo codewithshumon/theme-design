@@ -29,13 +29,13 @@ const p = (
 
 // Flash deals (campaign) -----------------------------------------------------
 export const flashDeals: Product[] = [
-  p("Wireless Noise-Cancelling Headphones", "fd-headphones", 59.9, 62, { mall: true, left: 35 }),
-  p("Smart Watch Series 9 GPS 45mm", "fd-watch", 129.0, 45, { preferred: true, left: 8 }),
+  p("Wireless Noise-Cancelling Headphones", "fd-headphones", 59.9, 62, { mall: true, left: 35, shopeeVoucher: true, shopVoucher: 15 }),
+  p("Smart Watch Series 9 GPS 45mm", "fd-watch", 129.0, 45, { preferred: true, left: 8, shopeeVoucher: true, shopVoucher: 20 }),
   p("Bluetooth Speaker Portable IPX7", "fd-speaker", 24.5, 53, { left: 50 }),
   p("Mechanical Keyboard RGB Hot-Swap", "fd-keyboard", 39.9, 38, { mall: true, left: 15 }),
   p("4K Action Camera 20MP Waterproof", "fd-camera", 89.0, 50, { left: 22 }),
-  p("Fast Charging Power Bank 20000mAh", "fd-powerbank", 18.9, 64, { preferred: true, left: 5 }),
-  p("True Wireless Earbuds ANC", "fd-earbuds", 29.9, 57, { mall: true, left: 30 }),
+  p("Fast Charging Power Bank 20000mAh", "fd-powerbank", 18.9, 64, { preferred: true, left: 5, shopVoucher: 10 }),
+  p("True Wireless Earbuds ANC", "fd-earbuds", 29.9, 57, { mall: true, left: 30, shopeeVoucher: true }),
   p("USB-C Hub 9-in-1 4K HDMI", "fd-hub", 22.9, 41, { left: 18 }),
   p("Gaming Mouse 16000 DPI", "fd-mouse", 16.9, 47, { preferred: true, left: 45 }),
   p("1080p Webcam with Ring Light", "fd-webcam", 27.9, 44, { left: 12 }),
@@ -45,10 +45,10 @@ export const flashDeals: Product[] = [
 
 // Top products (Shopee Mall "Top Products") ----------------------------------
 export const topProducts: Product[] = [
-  p("Flagship Smartphone 5G 256GB", "tp-phone", 699.0, 22, { mall: true, preferred: true }),
+  p("Flagship Smartphone 5G 256GB", "tp-phone", 699.0, 22, { mall: true, preferred: true, shopeeVoucher: true, shopVoucher: 25 }),
   p("Ultra-Thin Laptop 16GB i7", "tp-laptop", 899.0, 18, { mall: true }),
   p("Mirrorless Camera Kit 24MP", "tp-camera", 749.0, 15, { mall: true }),
-  p("OLED Smart TV 55\" 4K", "tp-tv", 549.0, 28, { mall: true, preferred: true }),
+  p("OLED Smart TV 55\" 4K", "tp-tv", 549.0, 28, { mall: true, preferred: true, shopeeVoucher: true, shopVoucher: 15 }),
   p("Robot Vacuum Cleaner LiDAR", "tp-vacuum", 219.0, 35, { mall: true }),
   p("Air Purifier HEPA H13", "tp-purifier", 129.0, 30, { mall: true }),
   p("Espresso Machine 15 Bar", "tp-espresso", 189.0, 33, { mall: true, preferred: true }),
@@ -57,25 +57,25 @@ export const topProducts: Product[] = [
 
 // Best sellers (Shopee product cards) ----------------------------------------
 export const bestSellers: Product[] = [
-  p("Stainless Steel Water Bottle 1L", "bs-bottle", 12.9, 30, { preferred: true }),
+  p("Stainless Steel Water Bottle 1L", "bs-bottle", 12.9, 30, { preferred: true, shopeeVoucher: true, shopVoucher: 10 }),
   p("Organic Cotton T-Shirt Pack", "bs-tshirt", 19.9, 40),
   p("LED Desk Lamp Dimmable USB", "bs-lamp", 14.5, 45, { mall: true }),
   p("Yoga Mat Non-Slip 6mm", "bs-yoga", 16.9, 35),
   p("Backpack Anti-Theft 25L", "bs-back", 24.9, 42, { preferred: true }),
-  p("Stainless Steel Cookware Set", "bs-cookware", 49.0, 38, { mall: true }),
+  p("Stainless Steel Cookware Set", "bs-cookware", 49.0, 38, { mall: true, shopeeVoucher: true, shopVoucher: 20 }),
   p("Memory Foam Pillow Cooling", "bs-pillow", 18.9, 33),
   p("Resistance Bands Set 5pcs", "bs-bands", 9.9, 50),
   p("Electric Kettle 1.7L Fast Boil", "bs-kettle", 22.9, 36, { mall: true }),
   p("Wireless Charger 15W Qi", "bs-charger", 13.9, 44, { preferred: true }),
   p("Smart Scale Body Composition", "bs-scale", 19.9, 39),
-  p("Air Fryer 5.5L Digital", "bs-fryer", 59.0, 31, { mall: true }),
+  p("Air Fryer 5.5L Digital", "bs-fryer", 59.0, 31, { mall: true, shopVoucher: 15 }),
 ];
 
 // Most viewed / popular (Shopee product cards) -------------------------------
 export const mostViewed: Product[] = [
-  p("Minimalist Wallet RFID Slim", "mv-wallet", 15.9, 28, { preferred: true }),
+  p("Minimalist Wallet RFID Slim", "mv-wallet", 15.9, 28, { preferred: true, shopeeVoucher: true, shopVoucher: 10 }),
   p("Sunglasses UV400 Polarized", "mv-sunglass", 12.9, 35),
-  p("Smart Door Lock Fingerprint", "mv-lock", 89.0, 25, { mall: true }),
+  p("Smart Door Lock Fingerprint", "mv-lock", 89.0, 25, { mall: true, shopeeVoucher: true, shopVoucher: 15 }),
   p("Portable Blender USB Rechargeable", "mv-blender", 21.9, 41),
   p("Himalayan Salt Lamp Natural", "mv-saltlamp", 17.9, 33, { preferred: true }),
   p("Foldable Camping Chair", "mv-chair", 26.9, 30),
@@ -142,11 +142,11 @@ export const mallProducts: MallProduct[] = [
 // Daily Discover (large grid) ------------------------------------------------
 export const dailyDiscover: Product[] = [
   p("Ceramic Coffee Mug 350ml", "dd-mug", 7.9, 35),
-  p("Phone Case Silicone Pro", "dd-case", 5.9, 42, { preferred: true }),
+  p("Phone Case Silicone Pro", "dd-case", 5.9, 42, { preferred: true, shopeeVoucher: true, shopVoucher: 10 }),
   p("Laptop Sleeve 15.6 Waterproof", "dd-sleeve", 11.9, 38),
   p("Wireless Mouse Silent Click", "dd-wmouse", 9.9, 45),
   p("USB-C Cable Braided 2m", "dd-cable", 4.9, 55),
-  p("Desk Organizer Wood", "dd-organizer", 13.9, 33, { mall: true }),
+  p("Desk Organizer Wood", "dd-organizer", 13.9, 33, { mall: true, shopVoucher: 15 }),
   p("Bed Sheet Set Cotton Queen", "dd-sheet", 19.9, 30),
   p("Anti-Fatigue Kitchen Mat", "dd-kmat", 17.9, 36),
   p("Hanging Plant Macrame", "dd-macrame", 6.9, 40),

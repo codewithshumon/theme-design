@@ -30,10 +30,26 @@ function TimeBox({ value }: { value: string }) {
   );
 }
 
+/**
+ * Isolated countdown so per-second ticks re-render only these three digits,
+ * not the product carousel below — which also avoids tripping React DevTools'
+ * tree-snapshot assertion while inspecting.
+ */
+function FlashCountdown() {
+  const { h, m, s } = useCountdown(2);
+  return (
+    <div className="flex items-center gap-1">
+      <TimeBox value={h} />
+      <span className="font-bold text-shopee">:</span>
+      <TimeBox value={m} />
+      <span className="font-bold text-shopee">:</span>
+      <TimeBox value={s} />
+    </div>
+  );
+}
+
 /** Shopee "Flash Sale" section — countdown + horizontal product carousel. */
 export default function FlashDeals() {
-  const { h, m, s } = useCountdown(2);
-
   return (
     <section className="overflow-hidden rounded-md bg-white ring-1 ring-black/5">
       <div className="flex items-center justify-between px-4 py-3">
@@ -44,13 +60,7 @@ export default function FlashDeals() {
           <span className="hidden text-sm text-gray-400 sm:inline">
             On Sale Now
           </span>
-          <div className="flex items-center gap-1">
-            <TimeBox value={h} />
-            <span className="font-bold text-shopee">:</span>
-            <TimeBox value={m} />
-            <span className="font-bold text-shopee">:</span>
-            <TimeBox value={s} />
-          </div>
+          <FlashCountdown />
         </div>
         <a
           href="#"

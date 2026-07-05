@@ -74,6 +74,8 @@ export interface Product {
   freeShipping?: boolean;
   liked?: boolean;
   left?: number; // items remaining (flash sale stock)
+  shopeeVoucher?: boolean; // eligible for a Shopee/platform voucher
+  shopVoucher?: number; // shop voucher percent off (e.g. 15)
 }
 
 export interface MallStore {
