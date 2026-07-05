@@ -1,12 +1,15 @@
 /**
  * Shopee-style promo strip pinned to the bottom-left of a product image.
- * One orange bar, white text, thin white dividers between segments. Only
- * segments that have data are rendered, and the strip only appears when the
- * product has at least one perk (free shipping / vouchers):
+ * Segments sit side by side, each with its own background color and a stacked
+ * (multi-line) label, with a "+" between perks to show stacking:
  *
- *   4.9 │ FREE SHIPPING │ SHOPEE VOUCHERS │ 15% SHOP VOUCHERS
+ *   [ 4.9 ] [ FREE      +] [ SHOPEE     +] [ 15%        ]
+ *   [ white] [ SHIPPING  ] [ VOUCHERS   ] [ SHOP       ]
+ *    white    green          red            [ VOUCHERS  ]
+ *                                            blue
  *
- * All values are dynamic — pass whatever the product has.
+ * Only segments with data are rendered; the strip only appears when the product
+ * has at least one perk (free shipping / vouchers). All values are dynamic.
  */
 interface PromoBarProps {
   rating?: number;
@@ -14,6 +17,12 @@ interface PromoBarProps {
   shopeeVoucher?: boolean;
   shopVoucher?: number;
   className?: string;
+}
+
+interface Perk {
+  key: string;
+  lines: string[];
+  bg: string;
 }
 
 export default function PromoBar({
@@ -27,26 +36,45 @@ export default function PromoBar({
   const hasPerk = freeShipping || shopeeVoucher || shopVoucher !== undefined;
   if (!hasPerk) return null;
 
-  const segments: string[] = [];
-  if (rating !== undefined) segments.push(rating.toFixed(1));
-  if (freeShipping) segments.push("Free Shipping");
-  if (shopeeVoucher) segments.push("Shopee Voucher");
-  if (shopVoucher !== undefined) segments.push(`${shopVoucher}% Shop Voucher`);
-
-  if (segments.length === 0) return null;
+  const perks: Perk[] = [];
+  if (freeShipping)
+    perks.push({ key: "ship", lines: ["Free", "Shipping"], bg: "bg-green-600" });
+  if (shopeeVoucher)
+    perks.push({ key: "sv", lines: ["Shopee", "Vouchers"], bg: "bg-red-600" });
+  if (shopVoucher !== undefined)
+    perks.push({
+      key: "shop",
+      lines: [`${shopVoucher}%`, "Shop", "Vouchers"],
+      bg: "bg-blue-600",
+    });
 
   return (
     <div
-      className={`absolute bottom-1 left-1 flex max-w-[calc(100%-0.5rem)] items-stretch overflow-hidden rounded-[3px] bg-shopee text-white shadow-sm ${className}`}
+      className={`absolute bottom-1 left-1 flex max-w-[calc(100%-0.5rem)] items-stretch overflow-hidden rounded-[3px] text-white shadow-sm ring-1 ring-black/10 ${className}`}
     >
-      {segments.map((seg, i) => (
+      {/* rating — white background, red number */}
+      {rating !== undefined && (
+        <span className="flex items-center justify-center whitespace-nowrap bg-white px-1.5 text-[10px] font-bold leading-tight text-shopee sm:text-[11px]">
+          {rating.toFixed(1)}
+        </span>
+      )}
+
+      {/* perks — colored segments with stacked labels and "+" between */}
+      {perks.map((perk, i) => (
         <span
-          key={`${seg}-${i}`}
-          className={`flex items-center whitespace-nowrap px-1.5 py-0.5 text-[8px] font-semibold uppercase leading-tight tracking-wide sm:text-[9px] ${
-            i > 0 ? "border-l border-white/40" : ""
-          }`}
+          key={perk.key}
+          className={`flex items-center gap-1 px-1.5 py-1 text-[9px] font-semibold uppercase leading-[1.15] tracking-wide sm:text-[10px] ${perk.bg}`}
         >
-          {seg}
+          <span className="flex flex-col">
+            {perk.lines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </span>
+          {i < perks.length - 1 && (
+            <span className="font-bold text-white/90" aria-hidden="true">
+              +
+            </span>
+          )}
         </span>
       ))}
     </div>
