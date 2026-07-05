@@ -11,6 +11,8 @@ import {
   cartCount,
   mainNav,
   searchPlaceholders,
+  sideMenu,
+  type SideMenuSection,
 } from "../data";
 
 /* ------------------------------------------------------------------ */
@@ -21,6 +23,7 @@ import {
 /* ------------------------------------------------------------------ */
 export default function Header() {
   const [phIndex, setPhIndex] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Rotate the search placeholder through latest campaigns / slogans
   useEffect(() => {
@@ -34,8 +37,12 @@ export default function Header() {
   return (
     <header className="w-full">
       <Row1 />
-      <Row2 placeholder={searchPlaceholders[phIndex]} />
-      <Row3 />
+      <Row2
+        placeholder={searchPlaceholders[phIndex]}
+        onOpenDrawer={() => setDrawerOpen(true)}
+      />
+      <Row3 onAllClick={() => setDrawerOpen(true)} />
+      <SideDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </header>
   );
 }
@@ -145,12 +152,22 @@ function Row1() {
 }
 
 /* ----------------------------- Row 2 ------------------------------ */
-function Row2({ placeholder }: { placeholder: string }) {
+function Row2({
+  placeholder,
+  onOpenDrawer,
+}: {
+  placeholder: string;
+  onOpenDrawer: () => void;
+}) {
   return (
     <div className="w-full bg-amazon-dark text-white">
       <div className="mx-auto flex h-15 max-w-[1920px] items-center gap-2 px-[2%] sm:gap-4">
         {/* hamburger (mobile) + logo */}
-        <button className="flex h-10 w-10 items-center justify-center rounded border border-transparent hover:border-white md:hidden">
+        <button
+          onClick={onOpenDrawer}
+          aria-label="Open menu"
+          className="flex h-10 w-10 items-center justify-center rounded border border-transparent hover:border-white md:hidden"
+        >
           <Hamburger />
         </button>
 
@@ -241,11 +258,15 @@ function Row2({ placeholder }: { placeholder: string }) {
 }
 
 /* ----------------------------- Row 3 ------------------------------ */
-function Row3() {
+function Row3({ onAllClick }: { onAllClick: () => void }) {
   return (
     <div className="w-full bg-amazon-nav text-white">
       <div className="mx-auto flex h-10 max-w-[1920px] items-center gap-1 overflow-x-auto px-[2%] no-scrollbar">
-        <button className="flex shrink-0 items-center gap-1 rounded px-2 py-1 text-sm font-bold ring-1 ring-transparent hover:ring-white">
+        <button
+          onClick={onAllClick}
+          aria-label="Open All menu"
+          className="flex shrink-0 items-center gap-1 rounded px-2 py-1 text-sm font-bold ring-1 ring-transparent hover:ring-white"
+        >
           <Hamburger />
           All
         </button>
@@ -268,11 +289,120 @@ function Row3() {
   );
 }
 
+/* --------------------------- Side drawer -------------------------- */
+// Amazon-style "All menu" — slides in from the left, overlay + backdrop.
+function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  // Close on Escape + lock body scroll while the drawer is open
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open, onClose]);
+
+  return (
+    <div
+      className={`fixed inset-0 z-100 ${open ? "" : "pointer-events-none"}`}
+      aria-hidden={!open}
+    >
+      {/* Backdrop */}
+      <div
+        onClick={onClose}
+        className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      {/* Panel */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Main menu"
+        className={`absolute inset-y-0 left-0 flex w-[88vw] max-w-95 flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Header */}
+        <div className="flex items-center gap-2 bg-amazon-nav px-4 py-4 text-white">
+          <UserIcon />
+          <span className="text-base font-bold">{accountLinks.greeting}</span>
+          <button
+            onClick={onClose}
+            aria-label="Close menu"
+            className="ml-auto flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-white/15"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+
+        {/* Body */}
+        <nav className="no-scrollbar flex-1 overflow-y-auto overscroll-contain">
+          {sideMenu.map((section) => (
+            <SideMenuBlock key={section.title} section={section} />
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
+}
+
+function SideMenuBlock({ section }: { section: SideMenuSection }) {
+  return (
+    <div className="border-b border-gray-100 last:border-b-0">
+      <h3 className="px-4 pb-1 pt-3 text-[15px] font-bold text-gray-900">
+        {section.title}
+      </h3>
+      <ul>
+        {section.items.map((item) => (
+          <li key={item.label}>
+            <a
+              href={item.href ?? "#"}
+              className={`flex items-center justify-between px-4 py-2.5 text-[14px] transition-colors hover:bg-gray-100 ${
+                item.highlight
+                  ? "bg-gray-100 font-semibold text-gray-900"
+                  : "text-gray-700"
+              }`}
+            >
+              <span>{item.label}</span>
+              {item.seeAll ? (
+                <CaretDown className="text-gray-400" />
+              ) : (
+                <ChevronRight className="text-gray-300" />
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 /* --------------------------- icons ------------------------------- */
 function CaretDown({ className = "" }: { className?: string }) {
   return (
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+function ChevronRight({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}
+function CloseIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 6 6 18M6 6l12 12" />
     </svg>
   );
 }

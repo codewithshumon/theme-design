@@ -1,4 +1,4 @@
-import type { TopBarItem, NavLink } from "./types";
+import type { TopBarItem, NavLink, SideMenuSection } from "./types";
 
 // Row 1 — Shopee-style utility bar ------------------------------------------
 export const topBarLeft: TopBarItem[] = [
@@ -69,4 +69,53 @@ export const searchPlaceholders = [
   "Free Shipping on orders over $25",
   "Mid-Year Deals — Save big on top brands",
   "Shop the Latest Drops & New Arrivals",
+];
+
+// Side drawer — Amazon "All menu" sections -----------------------------------
+export const sideMenu: SideMenuSection[] = [
+  {
+    title: "Trending",
+    items: [
+      { label: "Best Sellers" },
+      { label: "New Releases" },
+      { label: "Movers & Shakers" },
+    ],
+  },
+  {
+    title: "Digital Content & Devices",
+    items: [
+      { label: "Prime Video" },
+      { label: "Amazon Music" },
+      { label: "Kindle E-readers & Books" },
+      { label: "Amazon Appstore" },
+    ],
+  },
+  {
+    title: "Shop by Department",
+    items: [
+      { label: "Electronics" },
+      { label: "Computers" },
+      { label: "Smart Home" },
+      { label: "Arts & Crafts" },
+      { label: "See all", seeAll: true },
+    ],
+  },
+  {
+    title: "Programs & Features",
+    items: [
+      { label: "Gift Cards" },
+      { label: "Shop By Interest", highlight: true },
+      { label: "Amazon Live" },
+      { label: "International Shopping" },
+      { label: "See all", seeAll: true },
+    ],
+  },
+  {
+    title: "Help & Settings",
+    items: [
+      { label: "Your Account" },
+      { label: "Customer Service" },
+      { label: "Sign In" },
+    ],
+  },
 ];

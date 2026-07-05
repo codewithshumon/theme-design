@@ -20,6 +20,19 @@ export interface NavLink {
   hot?: boolean;
 }
 
+// Side drawer (Amazon "All menu") --------------------------------------------
+export interface SideMenuItem {
+  label: string;
+  href?: string;
+  highlight?: boolean; // active/selected row (e.g. "Shop By Interest")
+  seeAll?: boolean; // renders a down-caret "See all" row
+}
+
+export interface SideMenuSection {
+  title: string;
+  items: SideMenuItem[];
+}
+
 export interface HeroSlide {
   id: number;
   image: string;
