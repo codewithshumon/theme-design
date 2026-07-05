@@ -4,43 +4,33 @@ interface SectionHeaderProps {
   title: string;
   subtitle?: string;
   icon?: ReactNode;
-  accent?: "shopee" | "dark" | "white";
   link?: string;
   linkLabel?: string;
   /** right-side custom content (e.g. a countdown or tabs) */
   right?: ReactNode;
-  /** Shopee sections sit inside a white card with a colored top accent line */
+  /** Shopee sections sit inside a white card */
   card?: boolean;
 }
 
 /**
- * Shopee-style section header: a white bar with a thin colored accent stripe
- * across the top, a bold title on the left and a "See all" link on the right.
+ * Shopee-style section header: a white bar with a bold title on the left
+ * and a "See all" link on the right.
  */
 export default function SectionHeader({
   title,
   subtitle,
   icon,
-  accent = "shopee",
   link,
   linkLabel = "See all",
   right,
   card = true,
 }: SectionHeaderProps) {
-  const accentColor =
-    accent === "dark"
-      ? "bg-amazon-nav"
-      : accent === "white"
-        ? "bg-gray-300"
-        : "bg-shopee";
-
   const Wrapper = card ? "div" : "div";
 
   return (
     <Wrapper
       className={`relative overflow-hidden ${card ? "rounded-t-md bg-white" : ""}`}
     >
-      <div className={`h-0.75 w-full ${accentColor}`} />
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           {icon}

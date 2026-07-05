@@ -9,7 +9,6 @@ export default function DailyDiscover() {
       <SectionHeader
         title="Daily Discover"
         subtitle="Top picks updated daily"
-        accent="shopee"
         link="#"
         linkLabel="See more"
       />

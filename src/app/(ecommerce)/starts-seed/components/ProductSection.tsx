@@ -15,7 +15,7 @@ interface ProductSectionProps {
 }
 
 /**
- * Reusable Shopee-style product carousel: colored-accent header + horizontal
+ * Reusable Shopee-style product carousel: section header + horizontal
  * scroll of ProductCards. Used for Top Products, Best Sellers, Most Viewed.
  */
 export default function ProductSection({
@@ -32,7 +32,6 @@ export default function ProductSection({
       <SectionHeader
         title={title}
         subtitle={subtitle}
-        accent="shopee"
         link={link}
         linkLabel={linkLabel}
         icon={icon ? <span className="text-base">{icon}</span> : undefined}

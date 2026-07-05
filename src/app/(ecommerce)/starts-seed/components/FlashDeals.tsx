@@ -36,7 +36,6 @@ export default function FlashDeals() {
 
   return (
     <section className="overflow-hidden rounded-md bg-white ring-1 ring-black/5">
-      <div className="h-[3px] w-full bg-shopee" />
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 text-base font-semibold tracking-wide text-shopee sm:text-lg">

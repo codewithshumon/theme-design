@@ -12,7 +12,6 @@ export default function ShopeeMall() {
         title="Starts Seed Mall"
         subtitle="100% Authentic"
         icon={<MallIcon />}
-        accent="shopee"
         link="#"
         linkLabel="See all"
       />
@@ -27,10 +26,10 @@ export default function ShopeeMall() {
           >
             {/* store logo */}
             <div className="flex shrink-0 flex-col items-center gap-1">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-shopee to-shopee-dark text-base font-bold text-white">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-shopee to-shopee-dark text-base font-bold text-white">
                 {store.name.charAt(0)}
               </span>
-              <span className="max-w-[64px] truncate text-[11px] font-medium text-gray-600">
+              <span className="max-w-16 truncate text-[11px] font-medium text-gray-600">
                 {store.name}
               </span>
             </div>

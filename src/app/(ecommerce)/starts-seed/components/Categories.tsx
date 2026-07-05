@@ -7,7 +7,6 @@ export default function Categories() {
     <section className="rounded-md bg-white ring-1 ring-black/5">
       <SectionHeader
         title="Categories"
-        accent="shopee"
         link="#"
         linkLabel="See all"
       />

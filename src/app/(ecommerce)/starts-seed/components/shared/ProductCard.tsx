@@ -1,5 +1,4 @@
 import type { Product } from "../../data/types";
-import Stars from "./Stars";
 
 interface ProductCardProps {
   product: Product;
@@ -13,15 +12,14 @@ const formatSold = (n: number) =>
 
 /**
  * Shopee-style product card: square image with discount badge, ribbon tags,
- * 2-line name, orange price + strikethrough, rating + sold, location footer.
+ * 2-line name, orange price + strikethrough, and sold count.
  */
 export default function ProductCard({
   product,
   width,
   className = "",
 }: ProductCardProps) {
-  const { name, image, price, originalPrice, discount, sold, location, rating, mall, preferred, freeShipping } =
-    product;
+  const { name, image, price, originalPrice, discount, sold, mall, preferred, freeShipping } = product;
 
   return (
     <article
@@ -103,20 +101,9 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* rating + sold */}
-        <div className="mt-auto flex items-center gap-1.5 pt-1 text-[11px] text-gray-400">
-          <Stars rating={rating} size={11} />
-          <span className="ml-0.5">{rating.toFixed(1)}</span>
-          <span className="ml-auto">{formatSold(sold)}</span>
-        </div>
-
-        {/* location */}
-        <div className="flex items-center gap-1 border-t border-gray-100 pt-1.5 text-[11px] text-gray-400">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
-          <span className="truncate">{location}</span>
+        {/* sold count */}
+        <div className="mt-auto pt-1 text-[11px] text-gray-400">
+          {formatSold(sold)}
         </div>
       </div>
     </article>
