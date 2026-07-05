@@ -1,4 +1,4 @@
-import type { Product, MallStore } from "./types";
+import type { Product, MallStore, MallProduct } from "./types";
 import { img } from "./types";
 
 // Helper to build a product quickly
@@ -29,18 +29,18 @@ const p = (
 
 // Flash deals (campaign) -----------------------------------------------------
 export const flashDeals: Product[] = [
-  p("Wireless Noise-Cancelling Headphones", "fd-headphones", 59.9, 62, { mall: true }),
-  p("Smart Watch Series 9 GPS 45mm", "fd-watch", 129.0, 45, { preferred: true }),
-  p("Bluetooth Speaker Portable IPX7", "fd-speaker", 24.5, 53),
-  p("Mechanical Keyboard RGB Hot-Swap", "fd-keyboard", 39.9, 38, { mall: true }),
-  p("4K Action Camera 20MP Waterproof", "fd-camera", 89.0, 50),
-  p("Fast Charging Power Bank 20000mAh", "fd-powerbank", 18.9, 64, { preferred: true }),
-  p("True Wireless Earbuds ANC", "fd-earbuds", 29.9, 57, { mall: true }),
-  p("USB-C Hub 9-in-1 4K HDMI", "fd-hub", 22.9, 41),
-  p("Gaming Mouse 16000 DPI", "fd-mouse", 16.9, 47, { preferred: true }),
-  p("1080p Webcam with Ring Light", "fd-webcam", 27.9, 44),
-  p("Portable SSD 1TB USB 3.2", "fd-ssd", 79.0, 39, { mall: true }),
-  p("Smart Plug Mini WiFi", "fd-plug", 9.9, 55),
+  p("Wireless Noise-Cancelling Headphones", "fd-headphones", 59.9, 62, { mall: true, left: 35 }),
+  p("Smart Watch Series 9 GPS 45mm", "fd-watch", 129.0, 45, { preferred: true, left: 8 }),
+  p("Bluetooth Speaker Portable IPX7", "fd-speaker", 24.5, 53, { left: 50 }),
+  p("Mechanical Keyboard RGB Hot-Swap", "fd-keyboard", 39.9, 38, { mall: true, left: 15 }),
+  p("4K Action Camera 20MP Waterproof", "fd-camera", 89.0, 50, { left: 22 }),
+  p("Fast Charging Power Bank 20000mAh", "fd-powerbank", 18.9, 64, { preferred: true, left: 5 }),
+  p("True Wireless Earbuds ANC", "fd-earbuds", 29.9, 57, { mall: true, left: 30 }),
+  p("USB-C Hub 9-in-1 4K HDMI", "fd-hub", 22.9, 41, { left: 18 }),
+  p("Gaming Mouse 16000 DPI", "fd-mouse", 16.9, 47, { preferred: true, left: 45 }),
+  p("1080p Webcam with Ring Light", "fd-webcam", 27.9, 44, { left: 12 }),
+  p("Portable SSD 1TB USB 3.2", "fd-ssd", 79.0, 39, { mall: true, left: 3 }),
+  p("Smart Plug Mini WiFi", "fd-plug", 9.9, 55, { left: 28 }),
 ];
 
 // Top products (Shopee Mall "Top Products") ----------------------------------
@@ -125,6 +125,18 @@ export const mallStores: MallStore[] = [
     seed: "mall-gadget",
     images: [img("mall-gadget-1"), img("mall-gadget-2"), img("mall-gadget-3")],
   },
+];
+
+// Shopee Mall featured products (right-side 2×4 grid) -----------------------
+export const mallProducts: MallProduct[] = [
+  { id: 1, title: "Wireless Noise-Cancelling Headphones", image: img("mall-prod-1"), promo: "Up To 56% Off!" },
+  { id: 2, title: "Smartphone Pro Max 5G 256GB", image: img("mall-prod-2"), promo: "Super Brand Day" },
+  { id: 3, title: "4K Mirrorless Camera Kit", image: img("mall-prod-3"), promo: "Up To 40% Off" },
+  { id: 4, title: "Gaming Laptop RTX 4060", image: img("mall-prod-4"), promo: "Up To 70% Off" },
+  { id: 5, title: "Smart Watch Series 9 GPS", image: img("mall-prod-5"), promo: "Up To 50% Off" },
+  { id: 6, title: "Portable Bluetooth Speaker", image: img("mall-prod-6"), promo: "Mega Brand Fest" },
+  { id: 7, title: "Robot Vacuum Cleaner", image: img("mall-prod-7"), promo: "Up To 45% Off" },
+  { id: 8, title: "Digital Air Fryer 5.5L", image: img("mall-prod-8"), promo: "Up To 35% Off" },
 ];
 
 // Daily Discover (large grid) ------------------------------------------------

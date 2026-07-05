@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { flashDeals } from "../data";
-import ProductCard from "./shared/ProductCard";
+import FlashDealCard from "./FlashDealCard";
 import Carousel from "./shared/Carousel";
 
 /** Live countdown to the end of the flash sale (mm:ss:ss). */
@@ -71,7 +71,7 @@ export default function FlashDeals() {
           itemClassName="w-[160px] sm:w-[190px]"
         >
           {flashDeals.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <FlashDealCard key={product.id} product={product} />
           ))}
         </Carousel>
       </div>

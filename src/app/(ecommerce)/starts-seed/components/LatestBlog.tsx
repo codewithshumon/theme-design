@@ -6,7 +6,7 @@ import { blogPosts } from "../data";
 export default function LatestBlog() {
   return (
     <section className="rounded-md bg-white px-6 py-12 ring-1 ring-black/5 sm:py-16">
-      <div className="mx-auto max-w-5xl">
+      <div className="w-full">
         <div className="flex items-end justify-between">
           <div>
             <span className="inline-block rounded-full bg-shopee-light px-3 py-1 text-xs font-medium uppercase tracking-widest text-shopee">
@@ -30,7 +30,7 @@ export default function LatestBlog() {
               key={post.id}
               className="group flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white transition hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="relative aspect-[5/3] overflow-hidden bg-gray-100">
+              <div className="relative aspect-5/3 overflow-hidden bg-gray-100">
                 <img
                   src={post.image}
                   alt={post.title}

@@ -7,7 +7,7 @@ import Stars from "./shared/Stars";
 export default function Testimonials() {
   return (
     <section className="rounded-md bg-white px-6 py-12 ring-1 ring-black/5 sm:py-16">
-      <div className="mx-auto max-w-5xl text-center">
+      <div className="w-full text-center">
         <span className="inline-block rounded-full bg-shopee-light px-3 py-1 text-xs font-medium uppercase tracking-widest text-shopee">
           Reviews
         </span>

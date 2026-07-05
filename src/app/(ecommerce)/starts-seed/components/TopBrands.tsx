@@ -6,7 +6,7 @@ import { topBrands } from "../data";
 export default function TopBrands() {
   return (
     <section className="rounded-md bg-linear-to-b from-shopee-light to-white px-6 py-12 ring-1 ring-black/5 sm:py-16">
-      <div className="mx-auto max-w-5xl text-center">
+      <div className="w-full text-center">
         <span className="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium uppercase tracking-widest text-shopee ring-1 ring-shopee/20">
           Official Partners
         </span>

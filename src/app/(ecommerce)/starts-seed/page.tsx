@@ -78,11 +78,11 @@ export default function Page() {
           linkLabel="See all"
         />
 
-        {/* Section 9 — Amazon "international customers purchased" (image only) */}
-        <InternationalCustomers />
-
-        {/* Section 10 — Amazon complex 4+4+1+4 grid */}
+        {/* Section 9 — Amazon complex 4+4+1+4 grid */}
         <ComplexCategoryGrid />
+
+        {/* Section 10 — Amazon "international customers purchased" (image only) */} 
+        <InternationalCustomers />
 
         {/* Section 11 — Amazon "Best Sellers in Computers" (image only) */}
         <ComputersBestSellers />

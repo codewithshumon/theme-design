@@ -73,6 +73,7 @@ export interface Product {
   preferred?: boolean;
   freeShipping?: boolean;
   liked?: boolean;
+  left?: number; // items remaining (flash sale stock)
 }
 
 export interface MallStore {
@@ -80,6 +81,14 @@ export interface MallStore {
   name: string;
   seed: string;
   images: string[];
+}
+
+// Shopee Mall featured product tile (left banner + 2×4 grid) ---------------
+export interface MallProduct {
+  id: number;
+  title: string;
+  image: string;
+  promo: string;
 }
 
 // Amazon-style card: a titled box with up to 4 sub-images + a "see more" link
