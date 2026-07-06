@@ -5,7 +5,7 @@ import { brandProducts, type FilterState } from "../data";
 import FilterSidebar from "./FilterSidebar";
 import ListingToolbar from "./ListingToolbar";
 import ProductGrid from "./ProductGrid";
-import Pagination from "./Pagination";
+import Pagination from "../../components/shared/Pagination";
 
 const PAGE_SIZE = 12;
 

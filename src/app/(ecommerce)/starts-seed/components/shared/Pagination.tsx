@@ -13,7 +13,7 @@ export default function Pagination({ page, pageCount, onPage }: PaginationProps)
   const pages = pageWindow(page, pageCount, 1);
 
   return (
-    <nav className="flex items-center justify-center gap-1 py-2" aria-label="Pagination">
+    <nav className="flex items-center justify-center gap-1 px-2 py-3" aria-label="Pagination">
       <NavArrow
         disabled={page <= 1}
         onClick={() => onPage(page - 1)}
