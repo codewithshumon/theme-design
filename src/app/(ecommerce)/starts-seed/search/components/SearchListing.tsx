@@ -19,7 +19,7 @@ import ProductGrid from "./ProductGrid";
 import FeaturedShop from "./FeaturedShop";
 import Pagination from "../../components/shared/Pagination";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 18;
 
 const defaultFilters: FilterState = {
   categories: [],
@@ -175,8 +175,8 @@ export default function SearchListing() {
 
         {/* results */}
         <div className="min-w-0 flex-1 space-y-3">
-          {/* "Top Picks" featured shop — in place, page 1 only */}
-          {current === 1 && <FeaturedShop shop={store} products={topPicks} />}
+          {/* "Top Picks" featured shop — stays visible on every page */}
+          <FeaturedShop shop={store} products={topPicks} />
 
           <ProductGrid products={paged} view={filters.view} />
 
