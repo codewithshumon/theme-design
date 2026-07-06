@@ -4,15 +4,18 @@ import type { Product } from "../../data";
 
 /**
  * A product on the brand store extends the shared marketplace Product with the
- * extra fields the listing page needs to sort / filter (sub-category, recency).
- * The shared ProductCard only reads the Product fields, so this is a superset.
+ * extra fields the listing page needs to sort / filter (sub-category, recency,
+ * ship-from country, fulfilled flag). The shared ProductCard only reads the
+ * Product fields, so this is a superset.
  */
 export interface BrandProduct extends Product {
   category: string; // one of storeCategories
   daysAgo: number; // listing age in days (drives the "Latest" sort)
+  shippedFrom: string; // ship-from country (Shipped From filter)
+  fulfilled?: boolean; // fulfilled by the platform (Shop Type filter)
 }
 
-/** The featured brand whose official store this page renders. */
+/** The featured brand / shop shown in the "Top Picks" card. */
 export interface BrandStore {
   name: string;
   tagline: string;
@@ -32,6 +35,7 @@ export interface BrandStore {
   mall?: boolean; // Shopee Mall badge
   preferred?: boolean; // Preferred seller badge
   promo?: string; // e.g. "Up to 40% Off Storewide"
+  topPickPromo?: { discount: string; minSpend: number }; // claim box in Top Picks card
 }
 
 // Sub-categories shown in the filter sidebar ("All" clears the filter).
@@ -47,14 +51,14 @@ export const storeCategories = [
   "Bathroom Storage",
 ] as const;
 
-// Sort tabs in the listing toolbar (the two price directions are set via the
-// arrow buttons, not the tab row, but share the same SortKey union).
+// Sort tabs in the listing toolbar.
 export const sortTabs = [
   { key: "relevant", label: "Relevance" },
   { key: "latest", label: "Latest" },
   { key: "top", label: "Top Sales" },
 ] as const;
 
+// Includes the two price directions set via the arrow buttons.
 export type SortKey =
   | "relevant"
   | "latest"
@@ -62,16 +66,57 @@ export type SortKey =
   | "priceAsc"
   | "priceDesc";
 
+/* ----------------------------- filter option lists ------------------------ */
+// Each checkbox section in "SHOP BY FILTER". Keys map to product fields in the
+// SearchListing filter pipeline (see matchSection there); options whose key has
+// no backing data are visual-only (toggled but don't narrow results).
+
+export interface FilterOption {
+  key: string;
+  label: string;
+}
+
+export const shopTypeOptions: FilterOption[] = [
+  { key: "mall", label: "Shopee Mall" },
+  { key: "preferred", label: "Shopee Preferred" },
+  { key: "fulfilled", label: "Fulfilled by Shopee" },
+  { key: "premium", label: "Shopee Premium" },
+];
+
+export const serviceOptions: FilterOption[] = [
+  { key: "shopeeVoucher", label: "Shopee Vouchers" },
+  { key: "brandVoucher", label: "Brand Vouchers" },
+  { key: "supportLocal", label: "Support Local" },
+  { key: "wholesale", label: "Wholesale" },
+];
+
+export const shippedFromOptions: FilterOption[] = [
+  { key: "Singapore", label: "Singapore" },
+  { key: "Mainland China", label: "Mainland China" },
+  { key: "Korea", label: "Korea" },
+  { key: "Indonesia", label: "Indonesia" },
+  { key: "Overseas", label: "Overseas" },
+];
+
+export const shippingOptions: FilterOption[] = [
+  { key: "doorstep", label: "Doorstep Delivery" },
+  { key: "nextDay", label: "Next Day Delivery" },
+  { key: "express", label: "Express Delivery (Intl)" },
+  { key: "selfCollection", label: "Self Collection" },
+];
+
+/* ------------------------------- filter state ----------------------------- */
 /**
- * The active filter / sort state for the listing. Lifted into the SearchListing
+ * Active filter / sort state for the listing. Each checkbox section is an
+ * array of selected option keys (multi-select). Lifted into the SearchListing
  * client wrapper so the sidebar, toolbar and grid all stay in sync.
  */
 export interface FilterState {
   category: string; // storeCategories entry ("All" clears it)
-  freeShipping: boolean;
-  mallOnly: boolean;
-  preferredOnly: boolean;
-  voucherOnly: boolean;
+  shopType: string[]; // shopTypeOptions keys
+  services: string[]; // serviceOptions keys
+  shippedFrom: string[]; // shippedFromOptions keys
+  shipping: string[]; // shippingOptions keys
   ratingMin: number; // 0 = any
   priceMin: string; // text inputs (kept as strings)
   priceMax: string;
@@ -79,6 +124,13 @@ export interface FilterState {
   sort: SortKey;
   view: "grid" | "list";
 }
+
+/** The four checkbox-backed sections (for the generic toggle helper). */
+export type CheckboxSection =
+  | "shopType"
+  | "services"
+  | "shippedFrom"
+  | "shipping";
 
 // Quick price-range chips in the PRICE filter block.
 export interface PriceChip {

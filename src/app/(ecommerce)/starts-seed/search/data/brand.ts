@@ -24,7 +24,11 @@ export const store: BrandStore = {
   mall: true,
   preferred: true,
   promo: "Up to 40% Off Storewide",
+  topPickPromo: { discount: "15% OFF", minSpend: 60 },
 };
+
+/** The search query this results page answers (shown in the toolbar/breadcrumb). */
+export const searchQuery = "storage";
 
 /** 2.46M / 280K style follower formatting. */
 export const formatFollowers = (n: number) => {

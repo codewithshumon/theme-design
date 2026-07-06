@@ -1,18 +1,17 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import BrandBanner from "./components/BrandBanner";
 import SearchListing from "./components/SearchListing";
-import { store } from "./data";
+import { searchQuery, store } from "./data";
 
 export const metadata = {
-  title: `${store.name} — Official Store | Starts Seed Mall`,
-  description: `${store.tagline}. Shop authentic ${store.category} products from the ${store.name} official store — ${store.promo ?? "daily deals"}.`,
+  title: `Search results for “${searchQuery}” | Starts Seed Mall`,
+  description: `Shop the best ${searchQuery} deals from official stores like ${store.name} — filter by shop type, shipping, price and rating.`,
 };
 
 /**
- * Brand official-store page, laid out like a Shopee category / search listing:
- * the same home-page header, a brand store banner, then a filter sidebar +
- * sort toolbar + product grid + pagination, and the site footer.
+ * Search / category results page (Shopee-style): the same home-page header, a
+ * search-results context, then a "SHOP BY FILTER" sidebar + sort toolbar + a
+ * "Top Picks" featured shop card + product grid + pagination, and the footer.
  *
  * Same composition pattern as the starts-seed home page: this file is a server
  * component that pulls mock data from ./data and composes section components
@@ -28,17 +27,12 @@ export default function Page() {
         <nav className="flex flex-wrap items-center gap-1 text-xs text-gray-500">
           <a href="#" className="hover:text-shopee">Home</a>
           <ChevronRight />
-          <a href="#" className="hover:text-shopee">Brands</a>
+          <a href="#" className="hover:text-shopee">Search</a>
           <ChevronRight />
-          <a href="#" className="hover:text-shopee">{store.category}</a>
-          <ChevronRight />
-          <span className="font-medium text-gray-800">{store.name}</span>
+          <span className="font-medium text-gray-800">{searchQuery}</span>
         </nav>
 
-        {/* brand store header */}
-        <BrandBanner brand={store} />
-
-        {/* listing: filters + sort + grid + pagination */}
+        {/* listing: filters + sort + top picks + grid + pagination */}
         <SearchListing />
       </main>
 

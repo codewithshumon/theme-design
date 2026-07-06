@@ -1,20 +1,32 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { brandProducts, type FilterState } from "../data";
+import {
+  brandProducts,
+  shopTypeOptions,
+  serviceOptions,
+  shippedFromOptions,
+  shippingOptions,
+  store,
+  searchQuery,
+  type BrandProduct,
+  type CheckboxSection,
+  type FilterState,
+} from "../data";
 import FilterSidebar from "./FilterSidebar";
 import ListingToolbar from "./ListingToolbar";
 import ProductGrid from "./ProductGrid";
+import FeaturedShop from "./FeaturedShop";
 import Pagination from "../../components/shared/Pagination";
 
 const PAGE_SIZE = 12;
 
 const defaultFilters: FilterState = {
   category: "All",
-  freeShipping: false,
-  mallOnly: false,
-  preferredOnly: false,
-  voucherOnly: false,
+  shopType: [],
+  services: [],
+  shippedFrom: [],
+  shipping: [],
   ratingMin: 0,
   priceMin: "",
   priceMax: "",
@@ -25,18 +37,29 @@ const defaultFilters: FilterState = {
 
 /**
  * Owns the listing state (filters + sort + view + page) and composes the
- * sidebar, toolbar, grid and pagination. Server-rendered data flows in as
- * props; everything interactive lives here.
+ * sidebar, toolbar, "Top Picks" card, grid and pagination. Server-rendered
+ * data flows in from ./data; everything interactive lives here.
  */
 export default function SearchListing() {
   const [filters, setFilters] = useState<FilterState>(defaultFilters);
   const [page, setPage] = useState(1);
 
-  /** patch filters and snap back to page 1 so users see fresh results. */
+  /** patch scalar fields and snap back to page 1. */
   const set = (patch: Partial<FilterState>) => {
     setFilters((f) => ({ ...f, ...patch }));
     setPage(1);
   };
+
+  /** toggle one checkbox within a multi-select section. */
+  const toggle = (section: CheckboxSection, key: string) => {
+    setFilters((f) => {
+      const arr = f[section];
+      const next = arr.includes(key) ? arr.filter((k) => k !== key) : [...arr, key];
+      return { ...f, [section]: next };
+    });
+    setPage(1);
+  };
+
   const clearAll = () => {
     setFilters(defaultFilters);
     setPage(1);
@@ -44,15 +67,35 @@ export default function SearchListing() {
 
   /* ----- apply filters ----- */
   const filtered = useMemo(() => {
-    const min = filters.priceMin ? Number(filters.priceMin) : -Infinity;
-    const max = filters.priceMax ? Number(filters.priceMax) : Infinity;
+    const f = filters;
+    const min = f.priceMin ? Number(f.priceMin) : -Infinity;
+    const max = f.priceMax ? Number(f.priceMax) : Infinity;
     return brandProducts.filter((p) => {
-      if (filters.category !== "All" && p.category !== filters.category) return false;
-      if (filters.freeShipping && !p.freeShipping) return false;
-      if (filters.mallOnly && !p.mall) return false;
-      if (filters.preferredOnly && !p.preferred) return false;
-      if (filters.voucherOnly && !(p.shopeeVoucher || p.shopVoucher !== undefined)) return false;
-      if (filters.ratingMin && p.rating < filters.ratingMin) return false;
+      if (f.category !== "All" && p.category !== f.category) return false;
+      if (
+        !matchSection(f.shopType, {
+          mall: () => !!p.mall,
+          preferred: () => !!p.preferred,
+          fulfilled: () => !!p.fulfilled,
+        })
+      )
+        return false;
+      if (
+        !matchSection(f.services, {
+          shopeeVoucher: () => !!p.shopeeVoucher,
+          brandVoucher: () => p.shopVoucher !== undefined,
+        })
+      )
+        return false;
+      if (
+        !matchSection(
+          f.shippedFrom,
+          Object.fromEntries(shippedFromOptions.map((o) => [o.key, () => p.shippedFrom === o.key]))
+        )
+      )
+        return false;
+      if (!matchSection(f.shipping, { doorstep: () => !!p.freeShipping })) return false;
+      if (f.ratingMin && p.rating < f.ratingMin) return false;
       if (p.price < min || p.price > max) return false;
       return true;
     });
@@ -85,12 +128,26 @@ export default function SearchListing() {
   const current = Math.min(page, pageCount);
   const paged = sorted.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
 
+  /* ----- "Top Picks" featured shop: stable top-3 by sales (page 1 only) ----- */
+  const topPicks = useMemo<BrandProduct[]>(
+    () => [...brandProducts].sort((a, b) => b.sold - a.sold).slice(0, 3),
+    []
+  );
+
   const activeChips = buildActiveChips(filters);
 
   return (
     <section>
-      {/* sort / count / view */}
-      <ListingToolbar filters={filters} set={set} count={sorted.length} />
+      {/* sort / count / view / mini-pagination */}
+      <ListingToolbar
+        filters={filters}
+        set={set}
+        count={sorted.length}
+        query={searchQuery}
+        page={current}
+        pageCount={pageCount}
+        onPage={setPage}
+      />
 
       {/* active filter chips */}
       {activeChips.length > 0 && (
@@ -111,13 +168,15 @@ export default function SearchListing() {
       )}
 
       <div className="mt-2 flex flex-col gap-3 lg:flex-row">
-        {/* filter rail (sticky on desktop) */}
+        {/* filter rail */}
         <div className="lg:sticky lg:top-3 lg:self-start">
-          <FilterSidebar filters={filters} set={set} clearAll={clearAll} />
+          <FilterSidebar filters={filters} set={set} toggle={toggle} clearAll={clearAll} />
         </div>
 
         {/* results */}
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 space-y-3">
+          {current === 1 && <FeaturedShop shop={store} products={topPicks} />}
+
           <ProductGrid products={paged} view={filters.view} />
 
           <Pagination page={current} pageCount={pageCount} onPage={setPage} />
@@ -133,18 +192,42 @@ export default function SearchListing() {
   );
 }
 
+/* --------------------------- section match helper -------------------------- */
+/**
+ * Returns true if the product satisfies a checkbox section. Only option keys
+ * with a matcher are considered; options with no backing data (e.g. "Premium")
+ * are visual-only and never narrow the results.
+ */
+function matchSection(selected: string[], fns: Record<string, () => boolean>) {
+  const keys = selected.filter((k) => k in fns);
+  if (keys.length === 0) return true;
+  return keys.some((k) => fns[k]());
+}
+
 /* ----------------------- active-filter chip builders ----------------------- */
 function buildActiveChips(f: FilterState) {
   const chips: { key: string; label: string; clear: Partial<FilterState> }[] = [];
   if (f.category !== "All")
     chips.push({ key: "cat", label: f.category, clear: { category: "All" } });
-  if (f.freeShipping)
-    chips.push({ key: "ship", label: "Free Shipping", clear: { freeShipping: false } });
-  if (f.mallOnly) chips.push({ key: "mall", label: "Shopee Mall", clear: { mallOnly: false } });
-  if (f.preferredOnly)
-    chips.push({ key: "pref", label: "Preferred", clear: { preferredOnly: false } });
-  if (f.voucherOnly)
-    chips.push({ key: "voucher", label: "With Vouchers", clear: { voucherOnly: false } });
+
+  const sections: ReadonlyArray<[CheckboxSection, typeof shopTypeOptions]> = [
+    ["shopType", shopTypeOptions],
+    ["services", serviceOptions],
+    ["shippedFrom", shippedFromOptions],
+    ["shipping", shippingOptions],
+  ];
+  for (const [section, options] of sections) {
+    for (const opt of options) {
+      if (f[section].includes(opt.key)) {
+        chips.push({
+          key: section + opt.key,
+          label: opt.label,
+          clear: { [section]: f[section].filter((k) => k !== opt.key) } as Partial<FilterState>,
+        });
+      }
+    }
+  }
+
   if (f.ratingMin)
     chips.push({ key: "rating", label: `${f.ratingMin}★ & Up`, clear: { ratingMin: 0 } });
   if (f.activePriceChip)

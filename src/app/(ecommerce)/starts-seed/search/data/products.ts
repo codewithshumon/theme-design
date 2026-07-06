@@ -14,6 +14,7 @@ type Category = Exclude<(typeof storeCategories)[number], "All">;
  */
 let pid = 0;
 const locations = ["Overseas", "Singapore", "Dhaka", "Chattogram", "Khulna"];
+const shipCountries = ["Singapore", "Mainland China", "Korea", "Indonesia", "Overseas"];
 
 const p = (
   name: string,
@@ -21,7 +22,7 @@ const p = (
   price: number,
   discount: number,
   category: Category,
-  opts: Partial<BrandProduct> = {}
+  opts: Omit<Partial<BrandProduct>, "id" | "category" | "daysAgo" | "shippedFrom"> = {}
 ): BrandProduct => {
   const id = ++pid;
   const originalPrice = Math.round((price / (1 - discount / 100)) * 100) / 100;
@@ -38,6 +39,8 @@ const p = (
     ratingCount: 30 + ((id * 137) % 5200),
     freeShipping: id % 2 === 0,
     daysAgo: 1 + ((id * 53) % 380),
+    shippedFrom: shipCountries[id % shipCountries.length],
+    fulfilled: id % 5 === 0, // ~20% fulfilled by the platform
     category,
     ...opts,
   };

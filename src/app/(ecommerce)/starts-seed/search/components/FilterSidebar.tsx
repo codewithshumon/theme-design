@@ -3,41 +3,50 @@
 import { useState } from "react";
 import {
   storeCategories,
+  shopTypeOptions,
+  serviceOptions,
+  shippedFromOptions,
+  shippingOptions,
   priceChips,
   ratingFilters,
   type FilterState,
+  type FilterOption,
+  type CheckboxSection,
 } from "../data";
 
 interface FilterSidebarProps {
   filters: FilterState;
-  /** patch one or more filter fields at once */
+  /** patch scalar fields (category / rating / price / sort / view) */
   set: (patch: Partial<FilterState>) => void;
+  /** toggle one checkbox key within a multi-select section */
+  toggle: (section: CheckboxSection, key: string) => void;
   clearAll: () => void;
 }
 
 /**
- * Shopee-style left filter rail for the brand listing.
- * Collapsible sections: CATEGORIES · SHIPPING · PRICE · RATINGS · SERVICES.
- * All values are lifted into the SearchListing wrapper and patched via `set`.
+ * Shopee "SHOP BY FILTER" rail. Collapsible sections:
+ *  CATEGORIES (single-select) · SHOP TYPE · SERVICE & PROMOTION · SHIPPED FROM ·
+ *  SHIPPING OPTION (all checkbox multi-selects) · PRICE RANGE · RATINGS.
  */
-export default function FilterSidebar({ filters, set, clearAll }: FilterSidebarProps) {
+export default function FilterSidebar({ filters, set, toggle, clearAll }: FilterSidebarProps) {
   return (
     <aside className="w-full shrink-0 lg:w-60">
       <div className="overflow-hidden rounded-md bg-white ring-1 ring-black/5">
-        {/* top bar */}
+        {/* header */}
         <div className="flex items-center justify-between border-b border-gray-100 px-3 py-2">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-700">
-            Filters
+          <h2 className="text-xs font-bold uppercase tracking-wide text-gray-900">
+            Shop by Filter
           </h2>
           <button
             type="button"
             onClick={clearAll}
-            className="text-xs font-medium text-shopee hover:text-shopee-dark"
+            className="text-[11px] font-medium text-shopee hover:text-shopee-dark"
           >
             CLEAR ALL
           </button>
         </div>
 
+        {/* categories */}
         <Section title="Categories" defaultOpen>
           <ul className="space-y-0.5 text-sm">
             {storeCategories.map((cat) => {
@@ -61,14 +70,43 @@ export default function FilterSidebar({ filters, set, clearAll }: FilterSidebarP
           </ul>
         </Section>
 
-        <Section title="Shipping" defaultOpen>
-          <CheckRow
-            label="Free Shipping"
-            checked={filters.freeShipping}
-            onChange={(v) => set({ freeShipping: v })}
-          />
-        </Section>
+        {/* shop type */}
+        <CheckSection
+          title="Shop Type"
+          section="shopType"
+          options={shopTypeOptions}
+          selected={filters.shopType}
+          onToggle={toggle}
+        />
 
+        {/* service & promotion */}
+        <CheckSection
+          title="Service & Promotion"
+          section="services"
+          options={serviceOptions}
+          selected={filters.services}
+          onToggle={toggle}
+        />
+
+        {/* shipped from */}
+        <CheckSection
+          title="Shipped From"
+          section="shippedFrom"
+          options={shippedFromOptions}
+          selected={filters.shippedFrom}
+          onToggle={toggle}
+        />
+
+        {/* shipping option */}
+        <CheckSection
+          title="Shipping Option"
+          section="shipping"
+          options={shippingOptions}
+          selected={filters.shipping}
+          onToggle={toggle}
+        />
+
+        {/* price */}
         <Section title="Price Range" defaultOpen>
           <div className="flex items-center gap-2">
             <PriceInput
@@ -82,13 +120,6 @@ export default function FilterSidebar({ filters, set, clearAll }: FilterSidebarP
               onChange={(v) => set({ priceMax: v, activePriceChip: null })}
               placeholder="Max"
             />
-            <button
-              type="button"
-              onClick={() => set({ priceMin: filters.priceMin, priceMax: filters.priceMax })}
-              className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200"
-            >
-              Go
-            </button>
           </div>
           <div className="mt-2 flex flex-wrap gap-1">
             {priceChips.map((chip) => {
@@ -120,6 +151,7 @@ export default function FilterSidebar({ filters, set, clearAll }: FilterSidebarP
           </div>
         </Section>
 
+        {/* ratings */}
         <Section title="Ratings">
           <div className="flex flex-wrap gap-1">
             {ratingFilters.map((r) => {
@@ -142,26 +174,46 @@ export default function FilterSidebar({ filters, set, clearAll }: FilterSidebarP
             })}
           </div>
         </Section>
-
-        <Section title="Services">
-          <CheckRow
-            label="Shopee Mall"
-            checked={filters.mallOnly}
-            onChange={(v) => set({ mallOnly: v })}
-          />
-          <CheckRow
-            label="Preferred Seller"
-            checked={filters.preferredOnly}
-            onChange={(v) => set({ preferredOnly: v })}
-          />
-          <CheckRow
-            label="With Vouchers"
-            checked={filters.voucherOnly}
-            onChange={(v) => set({ voucherOnly: v })}
-          />
-        </Section>
       </div>
     </aside>
+  );
+}
+
+/* --------------------------- checkbox section ------------------------------ */
+function CheckSection({
+  title,
+  section,
+  options,
+  selected,
+  onToggle,
+}: {
+  title: string;
+  section: CheckboxSection;
+  options: FilterOption[];
+  selected: string[];
+  onToggle: (section: CheckboxSection, key: string) => void;
+}) {
+  return (
+    <Section title={title} defaultOpen>
+      <ul className="space-y-0.5">
+        {options.map((opt) => {
+          const checked = selected.includes(opt.key);
+          return (
+            <li key={opt.key}>
+              <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => onToggle(section, opt.key)}
+                  className="h-4 w-4 rounded-sm border-gray-300 text-shopee accent-shopee"
+                />
+                {opt.label}
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </Section>
   );
 }
 
@@ -192,28 +244,6 @@ function Section({
 }
 
 /* ------------------------------- primitives -------------------------------- */
-function CheckRow({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-}) {
-  return (
-    <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-gray-700">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-        className="h-4 w-4 rounded-sm border-gray-300 text-shopee accent-shopee"
-      />
-      {label}
-    </label>
-  );
-}
-
 function PriceInput({
   value,
   onChange,
