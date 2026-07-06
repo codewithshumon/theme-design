@@ -31,7 +31,7 @@ export default function Footer() {
         ↑ Back to top
       </a>
 
-      <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-8 px-6 py-12 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mx-auto grid max-w-350 grid-cols-2 gap-8 px-6 py-12 sm:grid-cols-3 lg:grid-cols-5">
         <div className="col-span-2 sm:col-span-3 lg:col-span-1">
           <div className="flex items-center gap-1.5">
             <span className="text-2xl">🌱</span>
@@ -69,7 +69,7 @@ export default function Footer() {
 
       {/* payment row */}
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-6 py-5 sm:flex-row">
+        <div className="mx-auto flex max-w-350 flex-col items-center justify-between gap-4 px-6 py-5 sm:flex-row">
           <div className="flex flex-wrap items-center gap-2">
             {paymentBadges.map((p) => (
               <span
