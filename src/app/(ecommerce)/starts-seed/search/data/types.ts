@@ -112,7 +112,7 @@ export const shippingOptions: FilterOption[] = [
  * client wrapper so the sidebar, toolbar and grid all stay in sync.
  */
 export interface FilterState {
-  category: string; // storeCategories entry ("All" clears it)
+  categories: string[]; // storeCategories entries (empty = All)
   shopType: string[]; // shopTypeOptions keys
   services: string[]; // serviceOptions keys
   shippedFrom: string[]; // shippedFromOptions keys
@@ -125,8 +125,9 @@ export interface FilterState {
   view: "grid" | "list";
 }
 
-/** The four checkbox-backed sections (for the generic toggle helper). */
+/** The checkbox-backed sections (for the generic toggle helper). */
 export type CheckboxSection =
+  | "categories"
   | "shopType"
   | "services"
   | "shippedFrom"

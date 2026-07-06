@@ -47,28 +47,15 @@ export default function FilterSidebar({ filters, set, toggle, clearAll }: Filter
         </div>
 
         {/* categories */}
-        <Section title="Categories" defaultOpen>
-          <ul className="space-y-0.5 text-sm">
-            {storeCategories.map((cat) => {
-              const active = filters.category === cat;
-              return (
-                <li key={cat}>
-                  <button
-                    type="button"
-                    onClick={() => set({ category: cat })}
-                    className={`w-full truncate rounded px-2 py-1.5 text-left transition ${
-                      active
-                        ? "bg-shopee-light font-medium text-shopee"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-shopee"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </Section>
+        <CheckSection
+          title="Categories"
+          section="categories"
+          options={storeCategories
+            .filter((c) => c !== "All")
+            .map((c) => ({ key: c, label: c }))}
+          selected={filters.categories}
+          onToggle={toggle}
+        />
 
         {/* shop type */}
         <CheckSection

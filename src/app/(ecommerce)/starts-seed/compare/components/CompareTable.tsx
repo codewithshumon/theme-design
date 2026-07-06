@@ -29,14 +29,14 @@ export default function CompareTable({ products, onRemove }: CompareTableProps) 
 
   return (
     <section className="overflow-x-auto rounded-md bg-white ring-1 ring-black/5">
-      <table className="border-collapse">
+      <table className="w-full min-w-190 table-fixed border-collapse">
         <thead>
           <tr>
             <th className="sticky left-0 z-10 w-40 border-b border-gray-100 bg-white px-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-400">
               Product
             </th>
             {products.map((p) => (
-              <th key={p.id} className="relative w-[180px] min-w-[180px] border-b border-gray-100 p-3 align-top">
+              <th key={p.id} className="relative border-b border-gray-100 p-3 align-top">
                 {products.length > 1 && (
                   <button
                     type="button"
@@ -52,7 +52,7 @@ export default function CompareTable({ products, onRemove }: CompareTableProps) 
                     <img src={img(p.imageSeed, 160, 160)} alt={p.name} loading="lazy" className="h-full w-full object-cover" />
                   </div>
                   <span className="mt-2 text-[10px] font-semibold uppercase tracking-wide text-gray-400">{p.brand}</span>
-                  <span className="line-clamp-2 min-h-[2.5rem] text-sm font-semibold text-gray-800">{p.name}</span>
+                  <span className="line-clamp-2 min-h-10 text-sm font-semibold text-gray-800">{p.name}</span>
                   <div className="mt-1 flex items-baseline gap-1">
                     <span className="text-xs text-shopee">$</span>
                     <span className="text-lg font-bold text-shopee">{p.price}</span>

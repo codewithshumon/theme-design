@@ -90,4 +90,36 @@ export const brandProducts: BrandProduct[] = [
   p("Rolling Tool Chest 5-Drawer Red", "uv-toolchest", 129.0, 22, "Shelving & Racks", { mall: true, preferred: true, shopeeVoucher: true, shopVoucher: 25 }),
   p("Insulated Picnic & Travel Storage Tote", "uv-tote", 21.9, 40, "Travel & Totes", { freeShipping: true, shopVoucher: 10 }),
   p("Bathroom Over-Toilet Storage Ladder", "uv-ladder", 47.9, 31, "Bathroom Storage", { mall: true, shopeeVoucher: true, shopVoucher: 15 }),
+
+  // more catalog — fills the 6-wide grid across pages
+  p("Glass Spice Jars with Labels 24pc", "uv-spicejar", 16.9, 39, "Kitchen Organization", { preferred: true, shopVoucher: 10 }),
+  p("Adjustable Pot Lid Organizer", "uv-lidorg", 13.9, 42, "Kitchen Organization"),
+  p("Over-The-Sink Drying Rack Stainless", "uv-sinkrack", 33.9, 30, "Kitchen Organization", { mall: true }),
+  p("Airtight Coffee Canister 1L Steel", "uv-coffee", 14.9, 44, "Kitchen Organization", { freeShipping: true, shopVoucher: 10 }),
+  p("Stackable Fridge Bins with Lids 6pc", "uv-fridgebin", 26.9, 36, "Kitchen Organization", { preferred: true, shopeeVoucher: true, shopVoucher: 15 }),
+  p("Hanging Fruit Hammock Under Cabinet", "uv-fruitham", 9.9, 47, "Kitchen Organization"),
+
+  p("Modular Shoe Rack 5-Tier Bamboo", "uv-shoerack", 42.9, 33, "Wardrobe & Closet", { mall: true, shopeeVoucher: true }),
+  p("Vacuum Compression Storage Bags 6pc", "uv-vac2", 15.9, 48, "Wardrobe & Closet", { freeShipping: true, shopVoucher: 10 }),
+  p("Slim Velvet Hangers 50pc Set", "uv-hanger", 19.9, 41, "Wardrobe & Closet", { preferred: true }),
+  p("Over-Door Shoe Organizer 24 Pockets", "uv-doorshoe", 12.9, 45, "Wardrobe & Closet", { shopVoucher: 10 }),
+
+  p("Industrial Pipe Clothing Rack", "uv-pipe", 69.0, 28, "Shelving & Racks", { mall: true, shopeeVoucher: true, shopVoucher: 20 }),
+  p("Cube Wire Storage shelving 9-Cube", "uv-cubeshelf", 54.9, 34, "Shelving & Racks", { mall: true }),
+  p("Corner Floating Shelves Set of 5", "uv-corner", 29.9, 37, "Shelving & Racks", { preferred: true, shopVoucher: 15 }),
+  p("Garage Heavy-Duty Storage Hook", "uv-hook", 11.9, 40, "Shelving & Racks"),
+
+  p("Woven Rope Basket with Handles", "uv-rope", 22.9, 32, "Laundry & Baskets", { mall: true, shopeeVoucher: true }),
+  p("Pop-Up Laundry Sorter 3 Bag", "uv-sorter", 28.9, 35, "Laundry & Baskets", { preferred: true, shopVoucher: 10 }),
+  p("Foldable Canvas Storage Ottoman", "uv-ottoman", 34.9, 38, "Laundry & Baskets", { freeShipping: true, shopeeVoucher: true, shopVoucher: 15 }),
+  p("Water Hyacinth Storage Basket XL", "uv-hyacinth", 19.9, 30, "Laundry & Baskets"),
+
+  p("Desktop Rotating Pen Holder", "uv-pen", 7.9, 49, "Desk & Drawer", { preferred: true, shopVoucher: 10 }),
+  p("Stackable Letter Tray 4-Tier", "uv-tray", 16.9, 39, "Desk & Drawer", { mall: true }),
+  p("Under-Drawer Divider A4 Size 6pc", "uv-adiv", 12.9, 43, "Desk & Drawer", { freeShipping: true }),
+
+  p("Wall-Mounted Bathroom Cabinet Mirror", "uv-bathcab", 89.0, 26, "Bathroom Storage", { mall: true, preferred: true, shopeeVoucher: true, shopVoucher: 20 }),
+  p("Freestanding Towel Rack 4-Bar", "uv-towel", 24.9, 34, "Bathroom Storage", { preferred: true, shopVoucher: 10 }),
+  p("Shower Caddy Corner Tension Pole", "uv-shower", 31.9, 33, "Bathroom Storage", { freeShipping: true, shopeeVoucher: true, shopVoucher: 15 }),
+  p("Stackable Clear Storage Bins 10L 8pc", "uv-10l", 29.9, 41, "Storage Boxes & Bins", { mall: true, shopVoucher: 15 }),
 ];

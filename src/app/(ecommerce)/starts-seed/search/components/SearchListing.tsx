@@ -22,7 +22,7 @@ import Pagination from "../../components/shared/Pagination";
 const PAGE_SIZE = 12;
 
 const defaultFilters: FilterState = {
-  category: "All",
+  categories: [],
   shopType: [],
   services: [],
   shippedFrom: [],
@@ -71,7 +71,7 @@ export default function SearchListing() {
     const min = f.priceMin ? Number(f.priceMin) : -Infinity;
     const max = f.priceMax ? Number(f.priceMax) : Infinity;
     return brandProducts.filter((p) => {
-      if (f.category !== "All" && p.category !== f.category) return false;
+      if (f.categories.length && !f.categories.includes(p.category)) return false;
       if (
         !matchSection(f.shopType, {
           mall: () => !!p.mall,
@@ -128,9 +128,9 @@ export default function SearchListing() {
   const current = Math.min(page, pageCount);
   const paged = sorted.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
 
-  /* ----- "Top Picks" featured shop: stable top-3 by sales (page 1 only) ----- */
+  /* ----- "Top Picks" featured shop: stable top-5 by sales (page 1 only) ----- */
   const topPicks = useMemo<BrandProduct[]>(
-    () => [...brandProducts].sort((a, b) => b.sold - a.sold).slice(0, 3),
+    () => [...brandProducts].sort((a, b) => b.sold - a.sold).slice(0, 5),
     []
   );
 
@@ -175,6 +175,7 @@ export default function SearchListing() {
 
         {/* results */}
         <div className="min-w-0 flex-1 space-y-3">
+          {/* "Top Picks" featured shop — in place, page 1 only */}
           {current === 1 && <FeaturedShop shop={store} products={topPicks} />}
 
           <ProductGrid products={paged} view={filters.view} />
@@ -207,8 +208,13 @@ function matchSection(selected: string[], fns: Record<string, () => boolean>) {
 /* ----------------------- active-filter chip builders ----------------------- */
 function buildActiveChips(f: FilterState) {
   const chips: { key: string; label: string; clear: Partial<FilterState> }[] = [];
-  if (f.category !== "All")
-    chips.push({ key: "cat", label: f.category, clear: { category: "All" } });
+  for (const cat of f.categories) {
+    chips.push({
+      key: "cat" + cat,
+      label: cat,
+      clear: { categories: f.categories.filter((c) => c !== cat) },
+    });
+  }
 
   const sections: ReadonlyArray<[CheckboxSection, typeof shopTypeOptions]> = [
     ["shopType", shopTypeOptions],
