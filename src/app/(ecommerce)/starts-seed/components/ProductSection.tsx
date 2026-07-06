@@ -1,6 +1,6 @@
 import type { Product } from "../data/types";
 import SectionHeader from "./shared/SectionHeader";
-import Carousel from "./shared/Carousel";
+import Carousel, { carouselItemCols } from "./shared/Carousel";
 import ProductCard from "./shared/ProductCard";
 
 interface ProductSectionProps {
@@ -10,13 +10,13 @@ interface ProductSectionProps {
   link?: string;
   linkLabel?: string;
   icon?: string;
-  /** item width inside the carousel */
-  itemWidth?: number;
 }
 
 /**
  * Reusable Shopee-style product carousel: section header + horizontal
  * scroll of ProductCards. Used for Top Products, Best Sellers, Most Viewed.
+ * Card width is responsive so exactly 7 fit on wide screens (fewer, wider,
+ * on smaller screens); extra cards scroll horizontally.
  */
 export default function ProductSection({
   title,
@@ -25,7 +25,6 @@ export default function ProductSection({
   link = "#",
   linkLabel = "See all",
   icon,
-  itemWidth = 190,
 }: ProductSectionProps) {
   return (
     <section className="overflow-hidden rounded-md bg-white ring-1 ring-black/5">
@@ -37,16 +36,9 @@ export default function ProductSection({
         icon={icon ? <span className="text-base">{icon}</span> : undefined}
       />
       <div className="px-2 pb-3 pt-1">
-        <Carousel
-          ariaLabel={title}
-          step={itemWidth * 4}
-          className="px-1"
-          itemClassName=""
-        >
+        <Carousel ariaLabel={title} step={700} className="px-1" itemClassName={carouselItemCols}>
           {products.map((product) => (
-            <div key={product.id} style={{ width: itemWidth }}>
-              <ProductCard product={product} />
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
         </Carousel>
       </div>

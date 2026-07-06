@@ -26,7 +26,7 @@ export default function FlashDealCard({
   return (
     <article
       style={width ? { width } : undefined}
-      className={`group relative flex w-full cursor-pointer flex-col overflow-hidden rounded-sm bg-white ring-1 ring-black/5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:ring-shopee/30 ${className}`}
+      className={`group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-sm bg-white ring-1 ring-black/5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:ring-shopee/30 ${className}`}
     >
       {/* image */}
       <div className="relative aspect-square overflow-hidden bg-gray-100">

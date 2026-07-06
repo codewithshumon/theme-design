@@ -1,12 +1,13 @@
 /**
  * Shopee-style promo strip pinned to the bottom-left of a product image.
- * Segments sit side by side, each with its own background color and a stacked
- * (multi-line) label, with a "+" between perks to show stacking:
+ * Segments sit flush side by side, each with its own background color and a
+ * stacked (multi-line) label. A "+" is centered on each seam between perks
+ * (absolutely positioned, so it takes no layout width):
  *
- *   [ 4.9 ] [ FREE      +] [ SHOPEE     +] [ 15%        ]
- *   [ white] [ SHIPPING  ] [ VOUCHERS   ] [ SHOP       ]
- *    white    green          red            [ VOUCHERS  ]
- *                                            blue
+ *   | 4.9 | FREE    | SHOPEE    | 15%      |
+ *   | white| SHIPPING+VOUCHERS +SHOP       |
+ *   | w   | green     red        VOUCHERS  |
+ *                              blue
  *
  * Only segments with data are rendered; the strip only appears when the product
  * has at least one perk (free shipping / vouchers). All values are dynamic.
@@ -44,7 +45,7 @@ export default function PromoBar({
   if (shopVoucher !== undefined)
     perks.push({
       key: "shop",
-      lines: [`${shopVoucher}%`, "Shop", "Vouchers"],
+      lines: [`${shopVoucher}% Shop`, "Vouchers"],
       bg: "bg-blue-600",
     });
 
@@ -54,16 +55,18 @@ export default function PromoBar({
     >
       {/* rating — white background, red number */}
       {rating !== undefined && (
-        <span className="flex items-center justify-center whitespace-nowrap bg-white px-1.5 text-[10px] font-bold leading-tight text-shopee sm:text-[11px]">
+        <span className="flex items-center justify-center whitespace-nowrap bg-white px-1.5 text-[12px] font-bold leading-tight text-shopee sm:text-[13px]">
           {rating.toFixed(1)}
         </span>
       )}
 
-      {/* perks — colored segments with stacked labels and "+" between */}
+      {/* perks — colored segments with stacked labels. The "+" is absolutely
+          positioned on each seam (translated to straddle the boundary) so it
+          sits centered between perks without consuming any layout width. */}
       {perks.map((perk, i) => (
         <span
           key={perk.key}
-          className={`flex items-center gap-1 px-1.5 py-1 text-[9px] font-semibold uppercase leading-[1.15] tracking-wide sm:text-[10px] ${perk.bg}`}
+          className={`relative flex items-center px-1.5 py-1 text-[8px] font-semibold uppercase leading-[1.15] tracking-wide sm:text-[9px] ${perk.bg}`}
         >
           <span className="flex flex-col">
             {perk.lines.map((line) => (
@@ -71,7 +74,10 @@ export default function PromoBar({
             ))}
           </span>
           {i < perks.length - 1 && (
-            <span className="font-bold text-white/90" aria-hidden="true">
+            <span
+              className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-1/2 text-[11px] font-bold leading-none text-white/90"
+              aria-hidden="true"
+            >
               +
             </span>
           )}

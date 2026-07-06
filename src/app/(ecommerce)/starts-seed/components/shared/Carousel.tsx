@@ -20,6 +20,15 @@ interface CarouselProps {
 }
 
 /**
+ * Responsive item width for a `gap-3` carousel track so exactly N cards fit per
+ * view at each breakpoint (the rest scroll horizontally):
+ *   2 → 3 → 4 → 5 → 6 → 7  across  base → sm → md → lg → xl → 2xl
+ * Each value subtracts the (N-1) gaps so the row fills edge-to-edge.
+ */
+export const carouselItemCols =
+  "w-[calc((100%-0.75rem)/2)] sm:w-[calc((100%-1.5rem)/3)] md:w-[calc((100%-2.25rem)/4)] lg:w-[calc((100%-3rem)/5)] xl:w-[calc((100%-3.75rem)/6)] 2xl:w-[calc((100%-4.5rem)/7)]";
+
+/**
  * Horizontal, scroll-snap carousel with left/right arrow buttons.
  * Each child is wrapped in a shrink-0 snap-start item. Arrows auto-hide
  * at the start/end of the track.
